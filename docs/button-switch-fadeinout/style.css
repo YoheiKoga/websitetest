@@ -1,0 +1,15 @@
+#opacity-test img {
+  height: 200px;
+  transition: opacity 0.5s ease;
+}
+
+#opacity-test.in img {
+  height: 200px;
+  opacity: 0.3;
+}
+
+#opacity-test.out img {
+  height: 200px;
+  opacity: 1;
+}
+
