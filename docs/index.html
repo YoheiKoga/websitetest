@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
   <title>yorimichi</title>
-  <link rel="stylesheet" href="normalize.css">
-  <link rel="stylesheet" href="style.css">
+  <!-- <link rel="stylesheet" href="normalize.css"> -->
+  <!-- <link rel="stylesheet" href="style.css"> -->
 </head>
 <body>
 <div>
@@ -19,9 +19,19 @@
     <!-- css inlinize -->
     <script>
       var cb = function() {
-        var l = document.createElement('link'); l.rel = 'stylesheet';
-        l.href = 'style.css';
-        var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
+        // for normalize.css
+        var ln = document.createElement('link');
+          ln.rel = 'stylesheet';
+          ln.href = 'normalize.css';
+        var hn = document.getElementsByTagName('head')[0]; hn.parentNode.insertBefore(ln, hn);
+
+        // for style.css
+        var ls = document.createElement('link');
+          ls.rel = 'stylesheet';
+          ls.href = 'style.css';
+        var hs = document.getElementsByTagName('head')[0]; hs.parentNode.insertBefore(ls, hs);
+
+
       };
       var raf = requestAnimationFrame || mozRequestAnimationFrame ||
           webkitRequestAnimationFrame || msRequestAnimationFrame;
