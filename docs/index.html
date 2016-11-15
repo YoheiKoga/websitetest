@@ -4,36 +4,86 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
   <title>yorimichi</title>
+<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.green-amber.min.css">
+  <style>
+    a {
+      color: black;
+    }
+  </style>
 </head>
 <body>
-<div>
-  <p>this is yoheikoga github pages website</p>
-  <ul>
-    <li><a href="https://yoheikoga.github.io/websitetest/button-switch-fadeinout/">fade in out animation by button</a></li>
-  </ul>
-</div>
+<!-- header -->
+  <div class="mdl-layout mdl-js-layout">
+    <header id="header" class="mdl-layout__header mdl-layout__header--scroll">
+      <div class="mdl-layout__header-row">
+        <span class="mdl-layout-title">this is <a href="https://twitter.com/KYhei">yoheikoga</a> github pages website</span>
+        <!-- add spacer, to align navigation to the right -->
+        <div class="mdl-layout-spacer"></div>
+        <!-- Navigation if wants -->
+        <!-- <nav class="mdl-navigation">
+          <a class="mdl-navigation__link" href="">Link</a>
+          <a class="mdl-navigation__link" href="">Link</a>
+          <a class="mdl-navigation__link" href="">Link</a>
+          <a class="mdl-navigation__link" href="">Link</a>
+        </nav> -->
+
+      </div>
+    </header>
+<!-- /header -->
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">this is <a href="https://twitter.com/KYhei">yoheikoga</a> github pages website</span>
+        <!-- Navigation if wants -->
+        <!-- <nav class="mdl-navigation">
+          <a class="mdl-navigation__link" href="">Link</a>
+          <a class="mdl-navigation__link" href="">Link</a>
+          <a class="mdl-navigation__link" href="">Link</a>
+          <a class="mdl-navigation__link" href="">Link</a>
+        </nav> --> 
+    </div>
+    <main class="mdl-layout__content">
+      <div class="page-content">
+        <ul class='mdl-list'>
+          <li class='mdl-list__item'><a href="https://yoheikoga.github.io/websitetest/button-switch-fadeinout/">fade in out animation by button</a></li>
+          <li class='mdl-list__item'><a href="https://yoheikoga.github.io/websitetest/firsttest/">first commit page</a></li>
+        </ul>
+      </div>     
+    </main>
+  </div>
 
 
-    <!-- css inlinize -->
-    <script>
-      var cb = function() {
-        // for normalize.css
-        var ln = document.createElement('link');
-          ln.rel = 'stylesheet';
-          ln.href = 'normalize.min.css';
-        var hn = document.getElementsByTagName('head')[0]; hn.parentNode.insertBefore(ln, hn);
+  <!-- css inlinize -->
+  <script>
+    var cb = function() {
+      // for normalize.css
+      var ln = document.createElement('link');
+        ln.rel = 'stylesheet';
+        ln.href = 'normalize.min.css';
+      var hn = document.getElementsByTagName('head')[0]; hn.parentNode.insertBefore(ln, hn);
 
-        // for style.css
-        var ls = document.createElement('link');
-          ls.rel = 'stylesheet';
-          ls.href = 'style.css';
-        var hs = document.getElementsByTagName('head')[0]; hs.parentNode.insertBefore(ls, hs);
-        
-      };
-      var raf = requestAnimationFrame || mozRequestAnimationFrame ||
-          webkitRequestAnimationFrame || msRequestAnimationFrame;
-      if (raf) raf(cb);
-      else window.addEventListener('load', cb);
-    </script>
+      // for style.css
+      var ls = document.createElement('link');
+        ls.rel = 'stylesheet';
+        ls.href = 'style.css';
+      var hs = document.getElementsByTagName('head')[0]; hs.parentNode.insertBefore(ls, hs);
+
+      // google material design lite
+      var lmdl = document.createElement('link');
+        lmdl.rel = 'stylesheet';
+        lmdl.href = 'https://code.getmdl.io/1.2.1/material.green-amber.min.css';
+      var hmdl = document.getElementsByTagName('head')[0]; hmdl.parentNode.insertBefore(lmdl, hmdl);
+      
+      // google fonts
+      var lgfnt = document.createElement('link');
+        lgfnt.rel = 'stylesheet';
+        lgfnt.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
+      var hgfnt = document.getElementsByTagName('head')[0]; hgfnt.parentNode.insertBefore(lgfnt, hgfnt);
+      
+    };
+    var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+        webkitRequestAnimationFrame || msRequestAnimationFrame;
+    if (raf) raf(cb);
+    else window.addEventListener('load', cb);
+  </script>
+  <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
 </body>
 </html>

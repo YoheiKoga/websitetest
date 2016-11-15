@@ -1,0 +1,15 @@
+{
+  "name": "yoheikoga.github.io",
+  "version": "1.0.0",
+  "description": "\"yoheikoga website making test\"",
+  "main": "index.js",
+  "repository": {
+    "url": "https://github.com/YoheiKoga/websitetest.git",
+    "type": "git"
+  },
+  "scripts": {
+    "start": "node ."
+  },
+  "author": "yoheikoga",
+  "license": "MIT"
+}
