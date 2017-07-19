@@ -14,7 +14,7 @@ scene.add(axis);
 scene.add(light);
 scene.add(light.target);
 
-renderer.setSize(window.innerWidth/2, window.innerHeight/2);
+renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 camera.position.set(100, 50, 200);
