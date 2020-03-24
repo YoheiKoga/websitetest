@@ -20,6 +20,21 @@ function init() {
     // 第二引数にrenderer.domElementを指定しないとdat.GUI操作時にcameraも動いてしまう
     var orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
 
+    var controls = new function () {
+        this.rotationSpeed = 6.00;
+        this.timeDelta = 1/(24*360)
+        this.satelliteInclination = 45;
+        this.satellitePerigeeArgument = 90;
+        this.satelliteOrbitalCircleA = 20;
+        this.satelliteOrbitalCircleB = 15;
+        this.satelliteOrbitalCenterShift = -5;
+    };
+
+    var gui = new dat.GUI();
+
+    gui.add(controls, 'rotationSpeed', 0, 8);
+    gui.add(controls, 'satelliteInclination', 0, 180);
+    gui.add(controls, 'satellitePerigeeArgument', 0, 180);
 
     // create the AxisHelper
     var axesHelper = new THREE.AxesHelper(5);
@@ -69,7 +84,7 @@ function init() {
     // satelliteGroup.rotation.z = controls.satelliteInclination * Math.PI/180;
     scene.add(satelliteGroup);
 
-    var satelliteAxesHelper = new THREE.AxesHelper(5);
+    var satelliteAxesHelper = new THREE.AxesHelper(15);
     satelliteGroup.add(satelliteAxesHelper);
 
     // create satellite
@@ -87,6 +102,25 @@ function init() {
 
     satelliteOrbitalPlane.rotation.x = -0.5 * Math.PI;
     satelliteGroup.add(satelliteOrbitalPlane);
+
+    // create satellite orbital circle
+    var satelliteOrbitalCurve = new THREE.EllipseCurve(
+        0, 0,
+        // 10, 10,
+        controls.satelliteOrbitalCircleA, controls.satelliteOrbitalCircleB,
+        0, 2 * Math.PI,
+        false,
+        0
+    );
+    var satelliteOrbitalCirclePoints = satelliteOrbitalCurve.getPoints(50);
+    var satelliteOrbitalCircleGeometry = new THREE.BufferGeometry().setFromPoints(satelliteOrbitalCirclePoints);
+    var satelliteOrbitalCircleMaterial = new THREE.LineBasicMaterial({color: 0x000000});
+    var satelliteOrbitalEllipse = new THREE.Line(satelliteOrbitalCircleGeometry, satelliteOrbitalCircleMaterial);
+
+    satelliteOrbitalEllipse.rotation.y = 90 * Math.PI;
+    satelliteOrbitalEllipse.position.x = controls.satelliteOrbitalCenterShift;
+
+    satelliteOrbitalPlane.add(satelliteOrbitalEllipse);
 
 
 
@@ -116,16 +150,20 @@ function init() {
     // call the render function
     var step = 0;
 
-    var controls = new function () {
-        this.rotationSpeed = 6.00;
-        this.timeDelta = 1/(24*360)
-        this.satelliteInclination = 45;
-    };
+    // var controls = new function () {
+    //     this.rotationSpeed = 6.00;
+    //     this.timeDelta = 1/(24*360)
+    //     this.satelliteInclination = 45;
+    //     this.satellitePerigeeArgument = 90;
+    //     this.satelliteOrbitalCircleA = 20;
+    //     this.satelliteOrbitalCircleB = 15;
+    // };
 
-    var gui = new dat.GUI();
+    // var gui = new dat.GUI();
 
-    gui.add(controls, 'rotationSpeed', 0, 8);
-    gui.add(controls, 'satelliteInclination', 0, 180);
+    // gui.add(controls, 'rotationSpeed', 0, 8);
+    // gui.add(controls, 'satelliteInclination', 0, 180);
+    // gui.add(controls, 'satellitePerigeeArgument', 0, 180);
 
     render();
 
@@ -138,11 +176,14 @@ function init() {
 
         // satellite revolution
         step += controls.rotationSpeed * 16 * controls.timeDelta;
-        satellite.position.x = ( 15 * (Math.cos(step)));
-        satellite.position.z = ( 15 * (Math.sin(step)));
-        // satelliteGroup.rotation.z = ( 15 * (Math.sin(step)));
+        satellite.position.x =  controls.satelliteOrbitalCenterShift + ( controls.satelliteOrbitalCircleA * (Math.cos(step)));
+        satellite.position.z = ( controls.satelliteOrbitalCircleB * (Math.sin(step)));
 
+        // inclination
         satelliteGroup.rotation.z = controls.satelliteInclination * Math.PI/180;
+
+        // perigee argument
+        satellite.rotation.y = controls.satellitePerigeeArgument * Math.PI/180;
 
         // render using requestAnimationFrame
         requestAnimationFrame(render);
