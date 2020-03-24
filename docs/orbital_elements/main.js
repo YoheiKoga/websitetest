@@ -28,6 +28,7 @@ function init() {
         this.satelliteOrbitalCircleA = 20;
         this.satelliteOrbitalCircleB = 15;
         this.satelliteOrbitalCenterShift = -5;
+        this.satelliteOrbitalEccentricity = 0.4;
     };
 
     var gui = new dat.GUI();
@@ -35,6 +36,7 @@ function init() {
     gui.add(controls, 'rotationSpeed', 0, 8);
     gui.add(controls, 'satelliteInclination', 0, 180);
     gui.add(controls, 'satellitePerigeeArgument', 0, 180);
+    gui.add(controls, 'satelliteOrbitalEccentricity', 0, 1);
 
     // create the AxisHelper
     var axesHelper = new THREE.AxesHelper(5);
@@ -84,7 +86,7 @@ function init() {
     // satelliteGroup.rotation.z = controls.satelliteInclination * Math.PI/180;
     scene.add(satelliteGroup);
 
-    var satelliteAxesHelper = new THREE.AxesHelper(15);
+    var satelliteAxesHelper = new THREE.AxesHelper(1);
     satelliteGroup.add(satelliteAxesHelper);
 
     // create satellite
@@ -93,7 +95,8 @@ function init() {
     var satellite = new THREE.Mesh(satelliteGeometry, satelliteMaterial);
 
     satellite.position.x = 15;
-    satelliteGroup.add(satellite);
+    // satelliteGroup.add(satellite);
+    satelliteAxesHelper.add(satellite);
 
     // create satellite orbital surface plane
     var satelliteOrbitalPlaneGeometry = new THREE.PlaneGeometry(60, 60, 1, 1);
@@ -101,7 +104,8 @@ function init() {
     var satelliteOrbitalPlane = new THREE.Mesh(satelliteOrbitalPlaneGeometry, satelliteOrbitalPlaneMaterial);
 
     satelliteOrbitalPlane.rotation.x = -0.5 * Math.PI;
-    satelliteGroup.add(satelliteOrbitalPlane);
+    // satelliteGroup.add(satelliteOrbitalPlane);
+    satelliteAxesHelper.add(satelliteOrbitalPlane);
 
     // create satellite orbital circle
     var satelliteOrbitalCurve = new THREE.EllipseCurve(
@@ -118,9 +122,11 @@ function init() {
     var satelliteOrbitalEllipse = new THREE.Line(satelliteOrbitalCircleGeometry, satelliteOrbitalCircleMaterial);
 
     satelliteOrbitalEllipse.rotation.y = 90 * Math.PI;
-    satelliteOrbitalEllipse.position.x = controls.satelliteOrbitalCenterShift;
+    // satelliteOrbitalEllipse.position.x = controls.satelliteOrbitalCenterShift;
+    // satelliteOrbitalEllipse.position.x = -controls.satelliteOrbitalEccentricity * controls.satelliteOrbitalCircleA;
 
     satelliteOrbitalPlane.add(satelliteOrbitalEllipse);
+    // satelliteAxesHelper.add(satelliteOrbitalEllipse);
 
 
 
@@ -150,20 +156,6 @@ function init() {
     // call the render function
     var step = 0;
 
-    // var controls = new function () {
-    //     this.rotationSpeed = 6.00;
-    //     this.timeDelta = 1/(24*360)
-    //     this.satelliteInclination = 45;
-    //     this.satellitePerigeeArgument = 90;
-    //     this.satelliteOrbitalCircleA = 20;
-    //     this.satelliteOrbitalCircleB = 15;
-    // };
-
-    // var gui = new dat.GUI();
-
-    // gui.add(controls, 'rotationSpeed', 0, 8);
-    // gui.add(controls, 'satelliteInclination', 0, 180);
-    // gui.add(controls, 'satellitePerigeeArgument', 0, 180);
 
     render();
 
@@ -176,14 +168,20 @@ function init() {
 
         // satellite revolution
         step += controls.rotationSpeed * 16 * controls.timeDelta;
-        satellite.position.x =  controls.satelliteOrbitalCenterShift + ( controls.satelliteOrbitalCircleA * (Math.cos(step)));
+        // satellite.position.x =  controls.satelliteOrbitalCenterShift + ( controls.satelliteOrbitalCircleA * (Math.cos(step)));
+        // satellite.position.x = (controls.satelliteOrbitalEccentricity * controls.satelliteOrbitalCircleA * -1) + ( controls.satelliteOrbitalCircleA * (Math.cos(step)));
+        satellite.position.x = (controls.satelliteOrbitalEccentricity * controls.satelliteOrbitalCircleA/2 * -1) + ( controls.satelliteOrbitalCircleA * (Math.cos(step)));
+        
         satellite.position.z = ( controls.satelliteOrbitalCircleB * (Math.sin(step)));
 
         // inclination
         satelliteGroup.rotation.z = controls.satelliteInclination * Math.PI/180;
 
         // perigee argument
-        satellite.rotation.y = controls.satellitePerigeeArgument * Math.PI/180;
+        satelliteAxesHelper.rotation.y = (controls.satellitePerigeeArgument - 90) * Math.PI/180;
+
+        // 
+        satelliteOrbitalEllipse.position.x = -controls.satelliteOrbitalEccentricity * controls.satelliteOrbitalCircleA/2;
 
         // render using requestAnimationFrame
         requestAnimationFrame(render);
