@@ -58,46 +58,42 @@ function init() {
 
     scene.add(earth);
 
+
+
     /**
      * add a satellite into satelliteGroup
      */
-
     // create satellite group
     var satelliteGroup = new THREE.Group();
-    // satelliteGroup.position.y = 0;
+    satelliteGroup.rotation.z = 45 * Math.PI/180;
+    // satelliteGroup.rotation.z = controls.satelliteInclination * Math.PI/180;
     scene.add(satelliteGroup);
 
     var satelliteAxesHelper = new THREE.AxesHelper(5);
     satelliteGroup.add(satelliteAxesHelper);
-
-    satelliteGroup.rotation.z = 45 * Math.PI/180;
-
-    // create satellite helper
-    // var satelliteHelperSphere = new THREE.SphereGeometry(1,20,20);
-    // var satelliteHelperMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-    // var satelliteHelper = new THREE.Mesh(satelliteHelperSphere, satelliteHelperMaterial);
-
-    // satelliteHelper.position.set = (0, 100, 0);
-    // satelliteHelper.position.y = 10;
-    // satelliteGroup.add(satelliteHelper);
-    // scene.add(satelliteHelper)
 
     // create satellite
     var satelliteGeometry = new THREE.SphereGeometry(2, 10, 10);
     var satelliteMaterial = new THREE.MeshLambertMaterial({color: 0x49483e});
     var satellite = new THREE.Mesh(satelliteGeometry, satelliteMaterial);
 
-    // position of the satellite
-    // satellite.position.set(15,0,0);
     satellite.position.x = 15;
-    // satelliteHelper.add(satellite);
     satelliteGroup.add(satellite);
 
-    // satelliteGroup.rotation.z = 45 * Math.PI/180
+    // create satellite orbital surface plane
+    var satelliteOrbitalPlaneGeometry = new THREE.PlaneGeometry(60, 60, 1, 1);
+    var satelliteOrbitalPlaneMaterial = new THREE.MeshLambertMaterial({color: 0x9fc1f0, transparent: true, opacity: 0.15});
+    var satelliteOrbitalPlane = new THREE.Mesh(satelliteOrbitalPlaneGeometry, satelliteOrbitalPlaneMaterial);
+
+    satelliteOrbitalPlane.rotation.x = -0.5 * Math.PI;
+    satelliteGroup.add(satelliteOrbitalPlane);
 
 
 
 
+    /**
+     * add camera
+     */
     // position and point the camera to the center of the scene
     camera.position.x = -30;
     camera.position.y = 40;
@@ -121,16 +117,17 @@ function init() {
     var step = 0;
 
     var controls = new function () {
-        this.rotationSpeed = 0.01;
+        this.rotationSpeed = 6.00;
         this.timeDelta = 1/(24*360)
+        this.satelliteInclination = 45;
     };
 
     var gui = new dat.GUI();
 
     gui.add(controls, 'rotationSpeed', 0, 8);
+    gui.add(controls, 'satelliteInclination', 0, 180);
 
     render();
-
 
     function render() {
         stats.update();
@@ -144,6 +141,8 @@ function init() {
         satellite.position.x = ( 15 * (Math.cos(step)));
         satellite.position.z = ( 15 * (Math.sin(step)));
         // satelliteGroup.rotation.z = ( 15 * (Math.sin(step)));
+
+        satelliteGroup.rotation.z = controls.satelliteInclination * Math.PI/180;
 
         // render using requestAnimationFrame
         requestAnimationFrame(render);
