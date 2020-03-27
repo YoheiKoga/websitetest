@@ -35,7 +35,7 @@ function init() {
 
     gui.add(controls, 'rotationSpeed', 0, 8);
     gui.add(controls, 'satelliteInclination', 0, 180);
-    gui.add(controls, 'satellitePerigeeArgument', 0, 180);
+    gui.add(controls, 'satellitePerigeeArgument', 0, 360);
     gui.add(controls, 'satelliteOrbitalEccentricity', 0, 1);
 
     // create the AxisHelper
@@ -162,9 +162,7 @@ function init() {
     function render() {
         stats.update();
         // rotate the earth around its axes
-        // earth.rotation.x += controls.rotationSpeed;
         earth.rotation.y += controls.rotationSpeed * controls.timeDelta;
-        // earth.rotation.z += controls.rotationSpeed;
 
         // satellite revolution
         step += controls.rotationSpeed * 16 * controls.timeDelta;
